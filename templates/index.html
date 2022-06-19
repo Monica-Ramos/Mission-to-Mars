@@ -51,17 +51,57 @@
     </div>
 
 
-
-    {% for hemisphere in mars.hemispheres %}
+    <!--
+    {% for hemisphere in mars.hemispheres_img_url %}
     
     <div class="row" id="mars-img_url">
         <div class="col-md-12"></div>
             <h4  class="text-center ">Mars Hemispheres</h4>
                 <img 
-                    src="{{hemispheres.img_url}}"
+                    src="{{hemisphere.img_url}}"
                     class="img-responsive"
                     alt="Responsive image"
                 />
     </div>
     
+    {% endfor %}-->
+
+    <!--
+    {% for hemisphere in mars.hemispheres %}
+    <img
+      src="{{mars.img_url}}"
+      class="img-responsive"
+      alt="Responsive image"
+    />
+    {% endfor %}-->
+
+
+    <!--
+    {% for i in range(0,4) %}
+    <div class="row", id="title">
+      <h4  class="text-center ">Mars titles</h4>
+    </div>
+
+    {% endfor %}-->
+
+    <!--
+    {% for hemisphere in mars.hemispheres %}
+    <div class="row", id="title">
+      <h4>Mars Facts</h4>
+        {{hemisphere.img_url}}
+      /h4>
+    </div>
+
+    {% endfor %}-->
+    
+    {% for hemisphere in hemisphere_image_urls %}
+      {% for img_url in hemispheres %}
+        {{hemispheres[img_url]}}
+      {% endfor %}
     {% endfor %}
+    
+
+
+
+
+
