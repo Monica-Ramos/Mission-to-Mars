@@ -10,8 +10,8 @@
     "# Import Splinter and BeautifulSoup\n",
     "from splinter import Browser\n",
     "from bs4 import BeautifulSoup as soup\n",
-    "from webdriver_manager.chrome import ChromeDriverManager\n",
-    "import pandas as pd"
+    "import pandas as pd\n",
+    "from webdriver_manager.chrome import ChromeDriverManager"
    ]
   },
   {
@@ -63,8 +63,9 @@
    ],
    "source": [
     "# Visit the mars nasa news site\n",
-    "url = 'https://redplanetscience.com'\n",
+    "url = 'https://redplanetscience.com/'\n",
     "browser.visit(url)\n",
+    "\n",
     "# Optional delay for loading the page\n",
     "browser.is_element_present_by_css('div.list_text', wait_time=1)"
    ]
@@ -79,6 +80,7 @@
     "#Set HTML parser, using BeautifulSoup\n",
     "html = browser.html\n",
     "news_soup = soup(html, 'html.parser')\n",
+    "\n",
     "slide_elem = news_soup.select_one('div.list_text')"
    ]
   },
@@ -191,9 +193,9 @@
    "outputs": [],
    "source": [
     "# Parse the resulting html with soup\n",
-    "#ALWAYS THE SAME\n",
     "html = browser.html\n",
-    "img_soup = soup(html, 'html.parser')"
+    "img_soup = soup(html, 'html.parser')\n",
+    "img_soup"
    ]
   },
   {
@@ -215,7 +217,7 @@
    ],
    "source": [
     "# Find the relative image url\n",
-    "img_url_rel = img_soup.find('img', class_='thumbimg').get('src')\n",
+    "img_url_rel = img_soup.find('img', class_='fancybox-image').get('src')\n",
     "img_url_rel"
    ]
   },
@@ -244,17 +246,19 @@
   },
   {
    "cell_type": "markdown",
-   "id": "c26055ff",
+   "id": "0d4479de",
    "metadata": {},
    "source": [
-    "###  Mars Facts"
+    "## SCRAPE MARS DATA: MARS FACTS"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 18,
    "id": "d861b331",
-   "metadata": {},
+   "metadata": {
+    "collapsed": true
+   },
    "outputs": [
     {
      "data": {
@@ -361,9 +365,38 @@
   },
   {
    "cell_type": "code",
+   "execution_count": null,
+   "id": "e5c862a7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#we're creating a new DataFrame from the HTML table.\n",
+    "#read_html() specifically searches for and returns a list of tables found in the HTML\n",
+    "# [0] pull only the first table it encounters, or the first item in the list\n",
+    "df = pd.read_html('https://galaxyfacts-mars.com')[0]\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1de1e220",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Create a DataFrame\n",
+    "df.columns=['Description', 'Mars', 'Earth']\n",
+    "df.set_index('Description', inplace=True)\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "code",
    "execution_count": 19,
    "id": "26118a14",
-   "metadata": {},
+   "metadata": {
+    "collapsed": true
+   },
    "outputs": [
     {
      "data": {
@@ -382,15 +415,141 @@
    ]
   },
   {
+   "cell_type": "markdown",
+   "id": "34ae92ce",
+   "metadata": {},
+   "source": [
+    "# D1: Scrape High-Resolution Mars’ Hemisphere Images and Titles"
+   ]
+  },
+  {
    "cell_type": "code",
    "execution_count": null,
-   "id": "c7392113",
+   "id": "2f079b7d",
    "metadata": {},
    "outputs": [],
    "source": [
-    "#end session\n",
+    "# browser to visit the URL \n",
+    "url = 'https://marshemispheres.com/'\n",
+    "\n",
+    "browser.visit(url)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7461d1cf",
+   "metadata": {},
+   "source": [
+    "### Hemispheres"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "4fe7c3f7",
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "AttributeError",
+     "evalue": "ResultSet object has no attribute 'get'. You're probably treating a list of elements like a single element. Did you call find_all() when you meant to call find()?",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[1;31mAttributeError\u001b[0m                            Traceback (most recent call last)",
+      "\u001b[1;32mC:\\Users\\MONICA~1\\AppData\\Local\\Temp/ipykernel_5164/3777854335.py\u001b[0m in \u001b[0;36m<module>\u001b[1;34m\u001b[0m\n\u001b[0;32m     16\u001b[0m \u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m     17\u001b[0m     \u001b[1;31m#find url\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[1;32m---> 18\u001b[1;33m     \u001b[0mimg_url\u001b[0m\u001b[1;33m=\u001b[0m\u001b[0mhtml_soup\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0mfind_all\u001b[0m\u001b[1;33m(\u001b[0m\u001b[1;34m'img'\u001b[0m\u001b[1;33m,\u001b[0m \u001b[0mclass_\u001b[0m\u001b[1;33m=\u001b[0m\u001b[1;34m'thumb'\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0mget\u001b[0m\u001b[1;33m(\u001b[0m\u001b[1;34m'scr'\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0m\u001b[0;32m     19\u001b[0m \u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m     20\u001b[0m     \u001b[1;31m#find title\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n",
+      "\u001b[1;32m~\\anaconda3\\lib\\site-packages\\bs4\\element.py\u001b[0m in \u001b[0;36m__getattr__\u001b[1;34m(self, key)\u001b[0m\n\u001b[0;32m   2251\u001b[0m     \u001b[1;32mdef\u001b[0m \u001b[0m__getattr__\u001b[0m\u001b[1;33m(\u001b[0m\u001b[0mself\u001b[0m\u001b[1;33m,\u001b[0m \u001b[0mkey\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m:\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m   2252\u001b[0m         \u001b[1;34m\"\"\"Raise a helpful exception to explain a common code fix.\"\"\"\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[1;32m-> 2253\u001b[1;33m         raise AttributeError(\n\u001b[0m\u001b[0;32m   2254\u001b[0m             \u001b[1;34m\"ResultSet object has no attribute '%s'. You're probably treating a list of elements like a single element. Did you call find_all() when you meant to call find()?\"\u001b[0m \u001b[1;33m%\u001b[0m \u001b[0mkey\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m   2255\u001b[0m         )\n",
+      "\u001b[1;31mAttributeError\u001b[0m: ResultSet object has no attribute 'get'. You're probably treating a list of elements like a single element. Did you call find_all() when you meant to call find()?"
+     ]
+    }
+   ],
+   "source": [
+    "# 2. Create a list to hold the images and titles.\n",
+    "hemisphere_image_urls = []\n",
+    "\n",
+    "# 3. Write code to retrieve the image urls and titles for each hemisphere.\n",
+    "#Parse html with soup\n",
+    "\n",
+    "#.find_by_css()\n",
+    "\n",
+    "# you have to use range(len())\n",
+    "#for x in range(4): \n",
+    "\n",
+    "    #create empty dictionary (Good)\n",
+    "    hemisphere={}\n",
+    "    \n",
+    "    #FROM HERE YOU NEED TO CHECK YOUR CODE, this won't work \n",
+    "    \n",
+    "    #click on each hemisphere link\n",
+    "    \n",
+    "    #locate every image\n",
+    "    img_url=html_soup.find('img', class_='thumb')\n",
+    "    #find title\n",
+    "    title=html_soup.find('img', class_='thumb').get('alt')\n",
+    "    \n",
+    "    #click into image\n",
+    "    \n",
+    "    #url\n",
+    "    img_url=html_soup.find('a', traget='_blank').get('href')\n",
+    "    \n",
+    "\n",
+    "    \n",
+    "    hemisphere['img_url']=img_url\n",
+    "    hemisphere['title']=title\n",
+    "    \n",
+    "    hemisphere_image_urls.append(hemisphere)\n",
+    "    \n",
+    "   \n",
+    "    print(urls)\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "id": "c56f972f",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[{'img_url': 'https://marshemispheres.com/images/full.jpg',\n",
+       "  'title': 'Cerberus Hemisphere Enhanced'},\n",
+       " {'img_url': 'https://marshemispheres.com/images/schiaparelli_enhanced-full.jpg',\n",
+       "  'title': 'Schiaparelli Hemisphere Enhanced'},\n",
+       " {'img_url': 'https://marshemispheres.com/images/syrtis_major_enhanced-full.jpg',\n",
+       "  'title': 'Syrtis Major Hemisphere Enhanced'},\n",
+       " {'img_url': 'https://marshemispheres.com/images/valles_marineris_enhanced-full.jpg',\n",
+       "  'title': 'Valles Marineris Hemisphere Enhanced'}]"
+      ]
+     },
+     "execution_count": 18,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# BIEN 4. Print the list that holds the dictionary of each image url and title.\n",
+    "hemisphere_image_urls"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "id": "94dab35b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 5. BIEN Quit the browser\n",
     "browser.quit()"
    ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d6507723",
+   "metadata": {},
+   "outputs": [],
+   "source": []
   },
   {
    "cell_type": "code",

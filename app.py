@@ -37,12 +37,7 @@ def scrape():
    mars_data = scraping.scrape_all()
    mars.update_one({}, {"$set":mars_data}, upsert=True)
    return redirect('/', code=302)
-   #Update databse
-   mars.update_one({}, {"$set":mars_data}, upsert=True)
-
-
-   #Add a redirect after succesfully scrapping the data
-   return redirect('/', code=302)
+   
 
 #run flask
 if __name__ == "__main__":

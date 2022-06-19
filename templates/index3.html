@@ -49,19 +49,36 @@
         </div>
       </div>
     </div>
-
-
-
-    {% for hemisphere in mars.hemispheres %}
-    
-    <div class="row" id="mars-img_url">
+ 
+      <!-- Section for Mars Hemispheres -->
+      <div class="row" id="mars-hemisphere">
         <div class="col-md-12"></div>
-            <h4  class="text-center ">Mars Hemispheres</h4>
-                <img 
-                    src="{{hemispheres.img_url}}"
-                    class="img-responsive"
-                    alt="Responsive image"
-                />
-    </div>
-    
-    {% endfor %}
+          <h4  class="text-center ">Mars Hemispheres</h4>
+        </div>
+      </div>
+
+        <!-- Loop through hemispheres dictionary and retrieve img_url and title -->
+        <!--{% for hemisphere in mars.hemispheres %}-->
+      <div class="row" id="mars-img_url">
+        <div class="col-md-12">
+          <img 
+            src="{{hemispheres.img_url}}"
+            class="img-responsive"
+            alt="Responsive image"
+          />
+        </div>
+      </div>
+            
+      <div class="row" id="mars-hemisphere-title">  
+        <div class="col-md-12">
+          <h3 class="media heading">{{hemispheres.title}}</h3>
+        </div>
+        
+      </div>
+       
+        <!--{% endfor %}-->
+
+
+
+  </body>
+</html>
