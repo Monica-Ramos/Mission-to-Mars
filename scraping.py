@@ -112,7 +112,7 @@ def mars_hemisphere(browser):
     html_soup=soup(html,'html.parser')
 
     #3.Write code to retrieve the full-resolution image URL and title for each hemisphere image.
-    for i in range(1):
+    for i in range(4):
     
         #Create an empty dictionary
         hemispheres={}
